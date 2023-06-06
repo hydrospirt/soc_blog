@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Status(models.TextChoices):
     DRAFT = 'OF', 'Черновик'
@@ -15,6 +16,12 @@ class Post(models.Model):
         verbose_name='Слаг',
         help_text='Заполните уникальный фрагмент URL-адреса',
     )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='blog_posts',
+        verbose_name='Автор',
+    )
     text = models.TextField(
         verbose_name='Текст',
         help_text='Заполните текст публикации'
@@ -27,6 +34,8 @@ class Post(models.Model):
                               default=Status.DRAFT)
 
     class Meta:
+        verbose_name = 'Публикация'
+        verbose_name_plural = 'Публикации'
         ordering = ('-publish',)
         indexes = [
             models.Index(fields=('-publish',))
