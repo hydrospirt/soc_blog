@@ -1,6 +1,14 @@
 from django.db import models
+from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.contrib.auth.models import User
+
+
+class PublishManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset()\
+            .filter(status=Status.PUBLISHED)
+
 
 class Status(models.TextChoices):
     DRAFT = 'OF', 'Черновик'
@@ -32,6 +40,8 @@ class Post(models.Model):
     status = models.CharField(max_length=2,
                               choices=Status.choices,
                               default=Status.DRAFT)
+    objects = models.Manager()
+    published = PublishManager()
 
     class Meta:
         verbose_name = 'Публикация'
