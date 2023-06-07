@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends "blog/base.html" %}
 {% block title %}Игроград - новости из игр и GameDev{% endblock title %}
 {% block content %}
   <h1>Игроград - посты пользователей</h1>
@@ -13,4 +13,5 @@
   </p>
     {{ post.body|truncatewords:30|linebreaks }}
   {% endfor %}
+  {% include "pagination.html" with page=posts %}
 {% endblock content %}
