@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class PublishManager(models.Manager):
@@ -23,6 +24,7 @@ class Post(models.Model):
         max_length=250,
         verbose_name='Слаг',
         help_text='Заполните уникальный фрагмент URL-адреса',
+        unique_for_date='publish',
     )
     author = models.ForeignKey(
         User,
@@ -53,3 +55,7 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args=[self.id])
+
