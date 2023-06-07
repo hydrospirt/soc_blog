@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% block title %}Игроград - новости из игр и GameDev{% endblock title %}
+{% block content %}
+  <h1>Игроград - посты пользователей</h1>
+  {% for post in posts %}
+  <h2>
+    <a href="{% url 'blog:post_detail' post.id %}">
+      {{ post.title }}
+    </a>
+  </h2>
+  <p class="date">
+    Опубликован {{ post.publish }} {{ post.author }}
+  </p>
+    {{ post.body|truncatewords:30|linebreaks }}
+  {% endfor %}
+{% endblock content %}
