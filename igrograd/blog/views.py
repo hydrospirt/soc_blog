@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.shortcuts import get_object_or_404, render
+
 from .models import Post, Status
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def post_list(request):
     post_list = Post.published.all()
@@ -18,6 +20,7 @@ def post_list(request):
         'blog/post/list.html',
         {'posts': posts}
     )
+
 
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post,

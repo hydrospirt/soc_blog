@@ -1,19 +1,19 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.query import QuerySet
-from django.utils import timezone
-from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 
 class PublishManager(models.Manager):
     def get_queryset(self) -> QuerySet:
-        return super().get_queryset()\
-            .filter(status=Status.PUBLISHED)
+        return super().get_queryset().filter(status=Status.PUBLISHED)
 
 
 class Status(models.TextChoices):
     DRAFT = 'OF', 'Черновик'
     PUBLISHED = 'ON', 'Опубликован'
+
 
 class Post(models.Model):
     title = models.CharField(
@@ -69,4 +69,3 @@ class Post(models.Model):
                            self.slug,
                            ]
                        )
-
