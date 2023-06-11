@@ -1,11 +1,11 @@
 from decouple import config
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import ListView
 from django.views.decorators.http import require_POST
+from django.views.generic import ListView
 
 from .forms import CommentForm, EmailPostForm
-from .models import Comment, Post, Status
+from .models import Post, Status
 
 
 class PostListView(ListView):
@@ -39,10 +39,15 @@ def post_detail(request, year, month, day, post):
                              publish__year=year,
                              publish__month=month,
                              publish__day=day)
+    comments = post.comments.filter(active=True)
+    form = CommentForm()
     return render(
         request,
         'blog/post/detail.html',
-        {'post': post}
+        {'post': post,
+         'comments': comments,
+         'form': form,
+         }
     )
 
 
@@ -80,6 +85,7 @@ def post_share(request, post_id):
          'form': form,
          'sent': sent}
     )
+
 
 @require_POST
 def post_comment(request, post_id):
