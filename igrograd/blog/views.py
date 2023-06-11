@@ -47,6 +47,7 @@ def post_detail(request, year, month, day, post):
 
 def post_share(request, post_id):
     post = get_object_or_404(
+        Post,
         id=post_id,
         status=Status.PUBLISHED
     )
@@ -60,10 +61,12 @@ def post_share(request, post_id):
             post_url = request.build_absolute_uri(
                 post.get_absolute_url()
             )
-            subject = (f'{cd["name"]} рекомендую прочитать' +
-                       f'{post.title}')
-            message = (f'Прочти {post.title} по {post_url}\n\n' +
-                       f'{cd["name"]} комментарии: {cd["comments"]}')
+            subject = (f'{cd["name"]} рекомендую прочитать ' +
+                       f'"{post.title}"')
+            message = ('Прочти интересную публикацию ' +
+                       f'"{post.title}" по {post_url}\n\n' +
+                       f'{cd["name"]} оставил Вам комментарий: ' +
+                       f'{cd["comments"]}')
             send_mail(subject, message, config('EMAIL_HOST_USER'),
                       [cd['to']])
             sent = True
