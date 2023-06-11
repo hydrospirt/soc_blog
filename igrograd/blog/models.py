@@ -69,3 +69,44 @@ class Post(models.Model):
                            self.slug,
                            ]
                        )
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Публикация',
+        help_text='Выберите публикацию для комментирования'
+    )
+    name = models.CharField(
+        max_length=80,
+        verbose_name='Имя',
+        help_text='Укажите Ваше имя'
+    )
+    email = models.EmailField(
+        verbose_name='Адрес электронной почты',
+        help_text='Укажите действующий адрес электронной почты'
+    )
+    text = models.TextField(
+        verbose_name='Текст комментария',
+        help_text='Заполните текст комментария'
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(
+        default=True,
+        verbose_name='Активирован',
+        help_text='Если "Активирован" комментарий отображается на сайте'
+    )
+
+    class Meta:
+        ordering = ('created',)
+        indexes = [
+            models.Index(fields=('created',))
+        ]
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self) -> str:
+        return f'Комментарий от {self.name} на {self.post}'
