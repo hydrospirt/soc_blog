@@ -1,9 +1,10 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from decouple import config
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 
-from .models import Post, Status
 from .forms import EmailPostForm
+from .models import Post, Status
 
 
 class PostListView(ListView):
@@ -43,21 +44,35 @@ def post_detail(request, year, month, day, post):
         {'post': post}
     )
 
+
 def post_share(request, post_id):
     post = get_object_or_404(
         id=post_id,
         status=Status.PUBLISHED
     )
+
+    sent = False
+
     if request.method == 'POST':
         form = EmailPostForm(request.POST)
         if form.is_valid():
-            cd = form.changed_data
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(
+                post.get_absolute_url()
+            )
+            subject = (f'{cd["name"]} рекомендую прочитать' +
+                       f'{post.title}')
+            message = (f'Прочти {post.title} по {post_url}\n\n' +
+                       f'{cd["name"]} комментарии: {cd["comments"]}')
+            send_mail(subject, message, config('EMAIL_HOST_USER'),
+                      [cd['to']])
+            sent = True
+
     form = EmailPostForm()
     return render(
         request,
         'blog/post/share.html',
         {'post': post,
-         'form': form}
+         'form': form,
+         'sent': sent}
     )
-
-
