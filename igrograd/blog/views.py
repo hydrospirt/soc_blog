@@ -33,13 +33,17 @@ def post_list(request, tag_slug=None):
     )
 
 
-def post_detail(request, year, month, day, post):
+def post_detail(request, year, month, day, post, tag_slug=None):
     post = get_object_or_404(Post,
                              status=Status.PUBLISHED,
                              slug=post,
                              publish__year=year,
                              publish__month=month,
                              publish__day=day)
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = post_list.filter(tags__in=[tag])
     comments = post.comments.filter(active=True)
     form = CommentForm()
     post_tags_ids = post.tags.values_list('id', flat=True)
@@ -54,6 +58,7 @@ def post_detail(request, year, month, day, post):
          'comments': comments,
          'form': form,
          'similar_posts': similar_posts,
+         'tag': tag,
          }
     )
 
