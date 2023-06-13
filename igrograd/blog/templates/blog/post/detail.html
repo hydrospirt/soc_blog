@@ -1,12 +1,12 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 {% block title %}{{ post.title }}{% endblock title %}
 {% block content %}
   <h1>{{ post.title }}</h1>
   <p class="date">
     Опубликован {{ post.publish }} {{ post.author }}
   </p>
-  {{ post.text|linebreaks }}
-  <p>
+    {{ post.text|markdown }}
   <p class="tags">
     Теги:
     {% for tag in post.tags.all  %}
@@ -19,7 +19,6 @@
     <a href={% url "blog:post_share" post.id %}>
       Поделится публикацией
     </a>
-  </p>
   <h2> Похожие публикации </h2>
   {% for post in similar_posts %}
     <p>
