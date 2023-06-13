@@ -14,7 +14,7 @@
   <h2> Похожие публикации </h2>
   {% for post in similar_posts %}
     <p>
-      <a href="{{ post.get_absolute_url }}">{{ post.title }}<a>
+      <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
     </p>
   {% empty %}
     Похожих публикаций ещё нет
