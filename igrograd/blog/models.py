@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 
 class PublishManager(models.Manager):
@@ -48,6 +49,7 @@ class Post(models.Model):
                               verbose_name='Статус')
     objects = models.Manager()
     published = PublishManager()
+    tags = TaggableManager()
 
     class Meta:
         verbose_name = 'Публикация'
