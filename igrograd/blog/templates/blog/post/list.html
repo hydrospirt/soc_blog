@@ -11,6 +11,9 @@
       {{ post.title }}
     </a>
   </h2>
+  <p>
+    {{ post.text|truncatewords:10}}
+  </p>
   <p class="tags">
     Теги:
     {% for tag in post.tags.all  %}
