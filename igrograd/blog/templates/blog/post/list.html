@@ -2,13 +2,24 @@
 {% block title %}Игроград - новости из игр и GameDev{% endblock title %}
 {% block content %}
   <h1>Игроград - посты пользователей</h1>
+  {% if tag %}
+    <h2>Публикации, помеченные тегом {{ tag.name }}</h2>
+  {% endif %}
   {% for post in posts %}
   <h2>
     <a href="{{ post.get_absolute_url }}">
       {{ post.title }}
     </a>
   </h2>
-  <p class="tags">Теги: {{ post.tags.all|join:", " }}</p>
+  <p class="tags">
+    Теги:
+    {% for tag in post.tags.all  %}
+      <a href= {% url "blog:post_list_by_slug" tag.slug %}>
+        {{ tag.name }}
+      </a>
+      {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
   <p class="date">
     Опубликован {{ post.publish }} {{ post.author }}
   </p>
