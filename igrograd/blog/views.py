@@ -1,5 +1,4 @@
 from decouple import config
-from urllib.parse import unquote
 from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
