@@ -2,22 +2,22 @@
 {% load blog_tags %}
 {% block title %}Поиск{% endblock title %}
 {% block content %}
-   {% if query %}
+  {% if query %}
     <h1>Публикации, которые содержат "{{ query }}"</h1>
     <h3>
-        {% with results.count as total_results %}
-          Найдено: {{ total_results }}
-        {% endwith %}
+      {% with results.count as total_results %}
+        Найдено: {{ total_results }}
+      {% endwith %}
     </h3>
     {% for post in results %}
-        <h4>
+      <h4>
         <a href="{{ post.get_absolute_url }}">
-            {{ post.title }}
+          {{ post.title }}
         </a>
-        </h4>
-        {{ post.text|markdown|truncatewords_html:12 }}
+      </h4>
+      {{ post.text|markdown|truncatewords_html:12 }}
     {% empty %}
-        <p>По вашему запросу записи не найдены</p>
+      <p>По вашему запросу записи не найдены</p>
     {% endfor %}
     <p><a href="{% url 'blog:post_search' %}">Искать снова</a></p>
   {% else %}
@@ -26,5 +26,5 @@
       {{ form.as_p }}
       <input type="submit" value="Поиск">
     </form>
-    {% endif %}
+  {% endif %}
 {% endblock content %}
