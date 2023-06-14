@@ -30,3 +30,7 @@ class CommentForm(forms.ModelForm):
             'email': None,
             'text': None
         }
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
