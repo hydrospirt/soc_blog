@@ -6,7 +6,8 @@
     <h1>Публикации, которые содержат "{{ query }}"</h1>
     <h3>
         {% with results.count as total_results %}
-        Найдено: {{ total_results }}
+          Найдено: {{ total_results }}
+        {% endwith %}
     </h3>
     {% for post in results %}
         <h4>
