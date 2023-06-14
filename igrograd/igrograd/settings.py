@@ -83,8 +83,10 @@ WSGI_APPLICATION = 'igrograd.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('NAME_DB'),
+        'USER': config('USER_DB'),
+        'PASSWORD': config('PASSWORD_DB'),
     }
 }
 
